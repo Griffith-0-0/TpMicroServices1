@@ -8,6 +8,7 @@ import org.badr.billingservice.repositories.ProductItemRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 @SpringBootApplication
+@EnableFeignClients
 public class BillingServiceApplication {
 
     public static void main(String[] args) {
@@ -29,9 +31,11 @@ public class BillingServiceApplication {
             customerIds.forEach(customerId -> {
                 Bill bill = new Bill();
                 bill.setBillDate(new Date());
+                bill.setCustomerId(customerId);
                 billRepository.save(bill);
                 productIds.forEach(productId -> {
                     ProductItem productItem = new ProductItem();
+                    productItem.setProductId(productId);
                     productItem.setPrice(1000+Math.random()*1000);
                     productItem.setQuantity((int) (50*Math.random()));
                     productItem.setBill(bill);

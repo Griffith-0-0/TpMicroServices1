@@ -15,8 +15,8 @@ public class Bill {
     private Long id;
     private Date billDate;
     private long customerId;
-    @OneToMany(mappedBy = "bill")
-    private List<ProductItem> items;
+    @OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
+    private List<ProductItem> productItems;
     @Transient
     private Customer customer;
 }

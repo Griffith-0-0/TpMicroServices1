@@ -1,0 +1,202 @@
+.bills-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2, h3, h4 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  background-color: #fee;
+  color: #c33;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.search-section {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.search-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.search-form input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  max-width: 200px;
+}
+
+.btn-search {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-search:hover {
+  background: #0056b3;
+}
+
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 20px;
+}
+
+.bills-list {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.bill-card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.bill-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.bill-card.selected {
+  border-color: #ffc107;
+  background: #fff8e1;
+}
+
+.bill-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.bill-info strong {
+  font-size: 16px;
+  color: #333;
+}
+
+.date {
+  color: #666;
+  font-size: 14px;
+}
+
+.customer {
+  color: #007bff;
+  font-size: 14px;
+}
+
+.total {
+  color: #28a745;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.bill-details {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.bill-header {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #ddd;
+}
+
+.detail-item {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.detail-item label {
+  font-weight: bold;
+  color: #666;
+}
+
+.detail-item span {
+  color: #333;
+  font-size: 16px;
+}
+
+.products-section {
+  margin-top: 20px;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.products-table thead {
+  background: #007bff;
+  color: white;
+}
+
+.products-table th,
+.products-table td {
+  padding: 12px;
+  text-align: left;
+}
+
+.products-table tbody tr {
+  border-bottom: 1px solid #eee;
+}
+
+.products-table tbody tr:hover {
+  background: #f5f5f5;
+}
+
+.total-row {
+  background: #f9f9f9;
+  font-size: 16px;
+}
+
+.empty-products {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+

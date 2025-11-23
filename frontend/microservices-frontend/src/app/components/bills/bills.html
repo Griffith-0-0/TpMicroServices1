@@ -1,0 +1,92 @@
+<div class="bills-container">
+  <h2>Gestion des Factures</h2>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Recherche de facture -->
+  <div class="search-section">
+    <h3>Rechercher une Facture</h3>
+    <div class="search-form">
+      <input type="number" [(ngModel)]="billId" placeholder="ID de la facture" min="1" />
+      <button class="btn-search" (click)="searchBill()">Rechercher</button>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Liste des factures -->
+    <div class="bills-list">
+      <h3>Factures Chargées</h3>
+      <div *ngIf="isLoading" class="loading">Chargement...</div>
+      
+      <div class="bill-card" *ngFor="let bill of bills" 
+           [class.selected]="selectedBill?.id === bill.id"
+           (click)="selectBill(bill)">
+        <div class="bill-info">
+          <strong>Facture #{{ bill.id }}</strong>
+          <span class="date">{{ bill.billDate | date:'dd/MM/yyyy' }}</span>
+          <span class="customer" *ngIf="bill.customer">
+            Client: {{ bill.customer.name }}
+          </span>
+          <span class="total">Total: {{ calculateTotal(bill) | number:'1.2-2' }} €</span>
+        </div>
+      </div>
+
+      <div *ngIf="!isLoading && bills.length === 0" class="empty-state">
+        Aucune facture chargée. Recherchez une facture par ID.
+      </div>
+    </div>
+
+    <!-- Détails de la facture sélectionnée -->
+    <div class="bill-details" *ngIf="selectedBill">
+      <h3>Détails de la Facture #{{ selectedBill.id }}</h3>
+      
+      <div class="bill-header">
+        <div class="detail-item">
+          <label>Date:</label>
+          <span>{{ selectedBill.billDate | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div class="detail-item" *ngIf="selectedBill.customer">
+          <label>Client:</label>
+          <span>{{ selectedBill.customer.name }} ({{ selectedBill.customer.email }})</span>
+        </div>
+      </div>
+
+      <div class="products-section" *ngIf="selectedBill.productItems && selectedBill.productItems.length > 0">
+        <h4>Produits</h4>
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th>Produit</th>
+              <th>Prix unitaire</th>
+              <th>Quantité</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of selectedBill.productItems">
+              <td>
+                <span *ngIf="item.product">{{ item.product.name }}</span>
+                <span *ngIf="!item.product">Produit #{{ item.productId }}</span>
+              </td>
+              <td>{{ item.price | number:'1.2-2' }} €</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ (item.price * item.quantity) | number:'1.2-2' }} €</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td colspan="3"><strong>Total</strong></td>
+              <td><strong>{{ calculateTotal(selectedBill) | number:'1.2-2' }} €</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div *ngIf="!selectedBill.productItems || selectedBill.productItems.length === 0" class="empty-products">
+        Aucun produit dans cette facture
+      </div>
+    </div>
+  </div>
+</div>

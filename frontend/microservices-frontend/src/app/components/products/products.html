@@ -1,0 +1,94 @@
+<div class="products-container">
+  <h2>Gestion des Produits</h2>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Liste des produits -->
+    <div class="products-list">
+      <h3>Liste des Produits</h3>
+      <div *ngIf="isLoading" class="loading">Chargement...</div>
+      
+      <div class="product-card" *ngFor="let product of products" 
+           [class.selected]="selectedProduct?.id === product.id"
+           (click)="selectProduct(product)">
+        <div class="product-info">
+          <strong>{{ product.name }}</strong>
+          <span class="price">{{ product.price | number:'1.2-2' }} €</span>
+          <span class="quantity">Stock: {{ product.quantity }}</span>
+        </div>
+        <button class="btn-delete" (click)="deleteProduct(product.id); $event.stopPropagation()">
+          Supprimer
+        </button>
+      </div>
+
+      <div *ngIf="!isLoading && products.length === 0" class="empty-state">
+        Aucun produit trouvé
+      </div>
+    </div>
+
+    <!-- Détails du produit sélectionné -->
+    <div class="product-details" *ngIf="selectedProduct">
+      <h3>Détails du Produit</h3>
+      
+      <div *ngIf="!isEditing" class="view-mode">
+        <div class="detail-item">
+          <label>ID:</label>
+          <span>{{ selectedProduct.id }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Nom:</label>
+          <span>{{ selectedProduct.name }}</span>
+        </div>
+        <div class="detail-item">
+          <label>Prix:</label>
+          <span>{{ selectedProduct.price | number:'1.2-2' }} €</span>
+        </div>
+        <div class="detail-item">
+          <label>Quantité:</label>
+          <span>{{ selectedProduct.quantity }}</span>
+        </div>
+        <button class="btn-edit" (click)="editProduct()">Modifier</button>
+      </div>
+
+      <div *ngIf="isEditing" class="edit-mode">
+        <div class="form-group">
+          <label>Nom:</label>
+          <input type="text" [(ngModel)]="selectedProduct.name" />
+        </div>
+        <div class="form-group">
+          <label>Prix:</label>
+          <input type="number" step="0.01" [(ngModel)]="selectedProduct.price" />
+        </div>
+        <div class="form-group">
+          <label>Quantité:</label>
+          <input type="number" [(ngModel)]="selectedProduct.quantity" />
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" (click)="updateProduct()">Enregistrer</button>
+          <button class="btn-cancel" (click)="cancelEdit()">Annuler</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulaire de création -->
+  <div class="create-form">
+    <h3>Nouveau Produit</h3>
+    <div class="form-group">
+      <label>Nom:</label>
+      <input type="text" [(ngModel)]="newProduct.name" placeholder="Nom du produit" />
+    </div>
+    <div class="form-group">
+      <label>Prix:</label>
+      <input type="number" step="0.01" [(ngModel)]="newProduct.price" placeholder="0.00" />
+    </div>
+    <div class="form-group">
+      <label>Quantité:</label>
+      <input type="number" [(ngModel)]="newProduct.quantity" placeholder="0" />
+    </div>
+    <button class="btn-create" (click)="createProduct()">Créer</button>
+  </div>
+</div>

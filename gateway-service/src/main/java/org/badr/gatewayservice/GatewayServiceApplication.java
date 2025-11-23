@@ -1,6 +1,5 @@
 package org.badr.gatewayservice;
 
-import com.netflix.discovery.DiscoveryClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;

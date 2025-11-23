@@ -1,6 +1,5 @@
 package org.badr.customerservice;
 
-import org.apache.catalina.core.ApplicationContext;
 import org.badr.customerservice.entities.Customer;
 import org.badr.customerservice.repositories.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;

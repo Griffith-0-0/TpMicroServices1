@@ -16,6 +16,18 @@
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
+  },
+  "/chatbot": {
+    "target": "http://localhost:8888",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/chat-bot": {
+    "target": "http://localhost:8888",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
   }
 }
 

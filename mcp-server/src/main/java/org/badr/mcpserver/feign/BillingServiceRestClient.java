@@ -1,6 +1,6 @@
-package org.badr.chatbot.feign;
+package org.badr.mcpserver.feign;
 
-import org.badr.chatbot.model.Bill;
+import org.badr.mcpserver.model.Bill;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.*;

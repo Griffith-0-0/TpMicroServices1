@@ -1,10 +1,11 @@
-package org.badr.chatbot.tools;
+package org.badr.mcpserver.tools;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import org.badr.chatbot.feign.CustomerServiceRestClient;
-import org.badr.chatbot.model.Customer;
-import org.springframework.ai.tool.annotation.Tool;
-import org.springframework.ai.tool.annotation.ToolParam;
+
+import org.badr.mcpserver.feign.CustomerServiceRestClient;
+import org.badr.mcpserver.model.Customer;
+import org.springaicommunity.mcp.annotation.McpArg;
+import org.springaicommunity.mcp.annotation.McpTool;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Component;
 
@@ -16,68 +17,68 @@ public class CustomerAiTools {
         this.customerServiceRestClient = customerServiceRestClient;
     }
 
-    @Tool(name = "getCustomer", description = "get customer by id")
+    @McpTool(name = "getCustomer", description = "get customer by id")
     @CircuitBreaker(name = "customer-service", fallbackMethod = "getDefaultCustomer")
-    public Customer getCustomer(@ToolParam(description = "customer id") Long id) {
+    public Customer getCustomer(@McpArg(description = "customer id") Long id) {
         return customerServiceRestClient.findCustomerById(id);
     }
 
-    @Tool(name = "getAllCustomers", description = "get all customers")
+    @McpTool(name = "getAllCustomers", description = "get all customers")
     @CircuitBreaker(name = "customer-service", fallbackMethod = "getAllCustomersFallback")
     public PagedModel<Customer> getAllCustomers() {
         return customerServiceRestClient.findAllCustomers();
     }
 
-    @Tool(name = "getCustomerByName", description = "search customer by name")
+    @McpTool(name = "getCustomerByName", description = "search customer by name")
     @CircuitBreaker(name = "customer-service", fallbackMethod = "getDefaultCustomerByName")
-    public Customer getCustomerByName(@ToolParam(description = "customer name") String name) {
+    public Customer getCustomerByName(@McpArg(description = "customer name") String name) {
         return customerServiceRestClient.findCustomerByName(name);
     }
 
-    @Tool(name = "getCustomerByEmail", description = "search customer by email")
+    @McpTool(name = "getCustomerByEmail", description = "search customer by email")
     @CircuitBreaker(name = "customer-service", fallbackMethod = "getDefaultCustomerByEmail")
-    public Customer getCustomerByEmail(@ToolParam(description = "customer email") String email) {
+    public Customer getCustomerByEmail(@McpArg(description = "customer email") String email) {
         return customerServiceRestClient.findCustomerByEmail(email);
     }
 
-    @Tool(name = "updateCustomer", description = "update customer information completely")
+    @McpTool(name = "updateCustomer", description = "update customer information completely")
     @CircuitBreaker(name = "customer-service", fallbackMethod = "updateCustomerFallback")
     public Customer updateCustomer(
-            @ToolParam(description = "customer id") Long id,
-            @ToolParam(description = "updated customer data") Customer customer) {
+            @McpArg(description = "customer id") Long id,
+            @McpArg(description = "updated customer data") Customer customer) {
         return customerServiceRestClient.updateCustomer(id, customer);
     }
 
-    @Tool(name = "updateCustomerName", description = "update only customer name")
+    @McpTool(name = "updateCustomerName", description = "update only customer name")
     @CircuitBreaker(name = "customer-service", fallbackMethod = "updateNameFallback")
     public Customer updateCustomerName(
-            @ToolParam(description = "customer id") Long id,
-            @ToolParam(description = "new name") String name) {
+            @McpArg(description = "customer id") Long id,
+            @McpArg(description = "new name") String name) {
         Customer customer = customerServiceRestClient.findCustomerById(id);
         customer.setName(name);
         return customerServiceRestClient.updateCustomer(id, customer);
     }
 
-    @Tool(name = "updateCustomerEmail", description = "update only customer email")
+    @McpTool(name = "updateCustomerEmail", description = "update only customer email")
     @CircuitBreaker(name = "customer-service", fallbackMethod = "updateEmailFallback")
     public Customer updateCustomerEmail(
-            @ToolParam(description = "customer id") Long id,
-            @ToolParam(description = "new email") String email) {
+            @McpArg(description = "customer id") Long id,
+            @McpArg(description = "new email") String email) {
         Customer customer = customerServiceRestClient.findCustomerById(id);
         customer.setEmail(email);
         return customerServiceRestClient.updateCustomer(id, customer);
     }
 
-    @Tool(name = "deleteCustomerById", description = "delete customer by id")
+    @McpTool(name = "deleteCustomerById", description = "delete customer by id")
     @CircuitBreaker(name = "customer-service", fallbackMethod = "deleteByIdFallback")
-    public String deleteCustomerById(@ToolParam(description = "customer id") Long id) {
+    public String deleteCustomerById(@McpArg(description = "customer id") Long id) {
         customerServiceRestClient.deleteCustomerById(id);
         return "Customer with id " + id + " deleted successfully";
     }
 
-    @Tool(name = "deleteCustomerByName", description = "delete customer by name")
+    @McpTool(name = "deleteCustomerByName", description = "delete customer by name")
     @CircuitBreaker(name = "customer-service", fallbackMethod = "deleteByNameFallback")
-    public String deleteCustomerByName(@ToolParam(description = "customer name") String name) {
+    public String deleteCustomerByName(@McpArg(description = "customer name") String name) {
         Customer customer = customerServiceRestClient.findCustomerByName(name);
         if (customer != null && customer.getId() != null) {
             customerServiceRestClient.deleteCustomerById(customer.getId());
@@ -86,9 +87,9 @@ public class CustomerAiTools {
         return "Customer " + name + " not found";
     }
 
-    @Tool(name = "deleteCustomerByEmail", description = "delete customer by email")
+    @McpTool(name = "deleteCustomerByEmail", description = "delete customer by email")
     @CircuitBreaker(name = "customer-service", fallbackMethod = "deleteByEmailFallback")
-    public String deleteCustomerByEmail(@ToolParam(description = "customer email") String email) {
+    public String deleteCustomerByEmail(@McpArg(description = "customer email") String email) {
         Customer customer = customerServiceRestClient.findCustomerByEmail(email);
         if (customer != null && customer.getId() != null) {
             customerServiceRestClient.deleteCustomerById(customer.getId());

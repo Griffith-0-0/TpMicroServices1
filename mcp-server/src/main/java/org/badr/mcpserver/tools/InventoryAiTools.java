@@ -1,10 +1,10 @@
-package org.badr.chatbot.tools;
+package org.badr.mcpserver.tools;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import org.badr.chatbot.feign.InventoryServiceRestClient;
-import org.badr.chatbot.model.Product;
-import org.springframework.ai.tool.annotation.Tool;
-import org.springframework.ai.tool.annotation.ToolParam;
+import org.badr.mcpserver.feign.InventoryServiceRestClient;
+import org.badr.mcpserver.model.Product;
+import org.springaicommunity.mcp.annotation.McpArg;
+import org.springaicommunity.mcp.annotation.McpTool;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Component;
 
@@ -16,72 +16,72 @@ public class InventoryAiTools {
         this.inventoryServiceRestClient = inventoryServiceRestClient;
     }
 
-    @Tool(name = "getProduct", description = "get product by id")
+    @McpTool(name = "getProduct", description = "get product by id")
     @CircuitBreaker(name = "inventory-service", fallbackMethod = "getDefaultProduct")
-    public Product getProduct(@ToolParam(description = "product id") Long id) {
+    public Product getProduct(@McpArg(description = "product id") Long id) {
         return inventoryServiceRestClient.getProductById(id);
     }
 
-    @Tool(name = "getAllProducts", description = "get all products")
+    @McpTool(name = "getAllProducts", description = "get all products")
     @CircuitBreaker(name = "inventory-service", fallbackMethod = "getAllProductsFallback")
     public PagedModel<Product> getAllProducts() {
         return inventoryServiceRestClient.findAllProducts();
     }
 
-    @Tool(name = "getProductByName", description = "search product by name")
+    @McpTool(name = "getProductByName", description = "search product by name")
     @CircuitBreaker(name = "inventory-service", fallbackMethod = "getDefaultProductByName")
-    public Product getProductByName(@ToolParam(description = "product name") String name) {
+    public Product getProductByName(@McpArg(description = "product name") String name) {
         return inventoryServiceRestClient.findProductByName(name);
     }
 
-    @Tool(name = "updateProduct", description = "update product information completely")
+    @McpTool(name = "updateProduct", description = "update product information completely")
     @CircuitBreaker(name = "inventory-service", fallbackMethod = "updateProductFallback")
     public Product updateProduct(
-            @ToolParam(description = "product id") Long id,
-            @ToolParam(description = "updated product data") Product product) {
+            @McpArg(description = "product id") Long id,
+            @McpArg(description = "updated product data") Product product) {
         return inventoryServiceRestClient.updateProduct(id, product);
     }
 
-    @Tool(name = "updateProductName", description = "update only product name")
+    @McpTool(name = "updateProductName", description = "update only product name")
     @CircuitBreaker(name = "inventory-service", fallbackMethod = "updateProductNameFallback")
     public Product updateProductName(
-            @ToolParam(description = "product id") Long id,
-            @ToolParam(description = "new name") String name) {
+            @McpArg(description = "product id") Long id,
+            @McpArg(description = "new name") String name) {
         Product product = inventoryServiceRestClient.getProductById(id);
         product.setName(name);
         return inventoryServiceRestClient.updateProduct(id, product);
     }
 
-    @Tool(name = "updateProductPrice", description = "update only product price")
+    @McpTool(name = "updateProductPrice", description = "update only product price")
     @CircuitBreaker(name = "inventory-service", fallbackMethod = "updateProductPriceFallback")
     public Product updateProductPrice(
-            @ToolParam(description = "product id") Long id,
-            @ToolParam(description = "new price") Double price) {
+            @McpArg(description = "product id") Long id,
+            @McpArg(description = "new price") Double price) {
         Product product = inventoryServiceRestClient.getProductById(id);
         product.setPrice(price);
         return inventoryServiceRestClient.updateProduct(id, product);
     }
 
-    @Tool(name = "updateProductQuantity", description = "update only product quantity")
+    @McpTool(name = "updateProductQuantity", description = "update only product quantity")
     @CircuitBreaker(name = "inventory-service", fallbackMethod = "updateProductQuantityFallback")
     public Product updateProductQuantity(
-            @ToolParam(description = "product id") Long id,
-            @ToolParam(description = "new quantity") Integer quantity) {
+            @McpArg(description = "product id") Long id,
+            @McpArg(description = "new quantity") Integer quantity) {
         Product product = inventoryServiceRestClient.getProductById(id);
         product.setQuantity(quantity);
         return inventoryServiceRestClient.updateProduct(id, product);
     }
 
-    @Tool(name = "deleteProductById", description = "delete product by id")
+    @McpTool(name = "deleteProductById", description = "delete product by id")
     @CircuitBreaker(name = "inventory-service", fallbackMethod = "deleteProductByIdFallback")
-    public String deleteProductById(@ToolParam(description = "product id") Long id) {
+    public String deleteProductById(@McpArg(description = "product id") Long id) {
         inventoryServiceRestClient.deleteProductById(id);
         return "Product with id " + id + " deleted successfully";
     }
 
-    @Tool(name = "deleteProductByName", description = "delete product by name")
+    @McpTool(name = "deleteProductByName", description = "delete product by name")
     @CircuitBreaker(name = "inventory-service", fallbackMethod = "deleteProductByNameFallback")
-    public String deleteProductByName(@ToolParam(description = "product name") String name) {
+    public String deleteProductByName(@McpArg(description = "product name") String name) {
         Product product = inventoryServiceRestClient.findProductByName(name);
         if (product != null && product.getId() != null) {
             inventoryServiceRestClient.deleteProductById(product.getId());

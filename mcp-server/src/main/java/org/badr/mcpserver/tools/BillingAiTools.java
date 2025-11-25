@@ -1,10 +1,10 @@
-package org.badr.chatbot.tools;
+package org.badr.mcpserver.tools;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import org.badr.chatbot.feign.BillingServiceRestClient;
-import org.badr.chatbot.model.Bill;
-import org.springframework.ai.tool.annotation.Tool;
-import org.springframework.ai.tool.annotation.ToolParam;
+import org.badr.mcpserver.feign.BillingServiceRestClient;
+import org.badr.mcpserver.model.Bill;
+import org.springaicommunity.mcp.annotation.McpArg;
+import org.springaicommunity.mcp.annotation.McpTool;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Component;
 
@@ -20,27 +20,27 @@ public class BillingAiTools {
         this.billingServiceRestClient = billingServiceRestClient;
     }
 
-    @Tool(name = "getBill", description = "get bill by id")
+    @McpTool(name = "getBill", description = "get bill by id")
     @CircuitBreaker(name = "billing-service", fallbackMethod = "getDefaultBill")
-    public Bill getBill(@ToolParam(description = "bill id") Long id) {
+    public Bill getBill(@McpArg(description = "bill id") Long id) {
         return billingServiceRestClient.getBillById(id);
     }
 
-    @Tool(name = "getAllBills", description = "get all bills")
+    @McpTool(name = "getAllBills", description = "get all bills")
     @CircuitBreaker(name = "billing-service", fallbackMethod = "getAllBillsFallback")
     public PagedModel<Bill> getAllBills() {
         return billingServiceRestClient.findAllBills();
     }
 
-    @Tool(name = "getBillsByCustomer", description = "get all bills for a specific customer")
+    @McpTool(name = "getBillsByCustomer", description = "get all bills for a specific customer")
     @CircuitBreaker(name = "billing-service", fallbackMethod = "getBillsByCustomerFallback")
-    public List<Bill> getBillsByCustomer(@ToolParam(description = "customer id") Long customerId) {
+    public List<Bill> getBillsByCustomer(@McpArg(description = "customer id") Long customerId) {
         return billingServiceRestClient.findBillsByCustomerId(customerId);
     }
 
-    @Tool(name = "getBillsByProduct", description = "get all bills that contain a specific product")
+    @McpTool(name = "getBillsByProduct", description = "get all bills that contain a specific product")
     @CircuitBreaker(name = "billing-service", fallbackMethod = "getBillsByProductFallback")
-    public List<Bill> getBillsByProduct(@ToolParam(description = "product id") Long productId) {
+    public List<Bill> getBillsByProduct(@McpArg(description = "product id") Long productId) {
         return billingServiceRestClient.findBillsByProductId(productId);
     }
 

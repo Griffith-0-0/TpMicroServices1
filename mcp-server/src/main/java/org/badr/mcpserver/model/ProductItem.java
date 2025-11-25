@@ -1,4 +1,4 @@
-package org.badr.chatbot.model;
+package org.badr.mcpserver.model;
 
 import lombok.*;
 
